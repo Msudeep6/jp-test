@@ -1,0 +1,2 @@
+If the positive integer N is the intial number of boxes in the stack.
+Assuming that the end number of boxes is 1, the maximum acheivable score is n(n-1)/2.
