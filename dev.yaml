@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abc-${environment} # DEV, UAT & PROD
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx-pod
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+          resources:
+            limits:
+              memory: "256Mi"  # Maximum memory allowed
+              cpu: "200m"       # Maximum CPU allowed (200 milliCPU)
+            requests:
+              memory: "128Mi"  # Initial memory request
+              cpu: "100m"       # Initial CPU request
+            livenessProbe:
+              httpGet:
+                path: /actuator/keepalive
+                port: 8080  
+                initialDelaySeconds: 15
+                periodSeconds: 20
+            readinessProbe:
+              httpGet:
+                path: /actuator/keepalive
+                port: 8080  
+                initialDelaySeconds: 15
+                periodSeconds: 20
